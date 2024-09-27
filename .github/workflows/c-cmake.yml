@@ -39,8 +39,16 @@ jobs:
           path: build/HashMap
 
 
-# jobs:
-#   build:
-#     run-on: windows-latest
+jobs:
+  build:
+    run-on: windows-latest
 
-#     steps:
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install CMake and MSYS2
+        run: |
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+          choco install msys2
+          refreshenv
