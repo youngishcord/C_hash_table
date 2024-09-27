@@ -9,7 +9,8 @@ on:
       - main
 
 jobs:
-  build: 
+  linux-build: 
+    name: linux-build
     runs-on: ubuntu-latest
 
     steps:
@@ -39,9 +40,9 @@ jobs:
           path: build/HashMap
 
 
-jobs:
-  build:
-    run-on: windows-latest
+  windows-build: 
+    name: windows-build
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -52,3 +53,21 @@ jobs:
           choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
           choco install msys2
           refreshenv
+      
+      - name: Setup MSYS
+        run: |
+          C:\msys64\usr\bin\bash.exe -c "pacman -Sy --noconfirm"
+          C:\msys64\usr\bin\bash.exe -c "pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make"
+
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake -G "MinGw Makefiles" ..
+          mingw32-make
+
+      - name: Release executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows build
+          path: build/HashMap.exe
