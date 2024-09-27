@@ -44,30 +44,39 @@ jobs:
     name: windows-build
     runs-on: windows-latest
 
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install CMake and MSYS2
-        run: |
-          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-          choco install msys2
-          refreshenv
-      
-      - name: Setup MSYS
-        run: |
-          C:\msys64\usr\bin\bash.exe -c "pacman -Sy --noconfirm"
-          C:\msys64\usr\bin\bash.exe -c "pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make"
-
-      - name: Build
-        run: |
-          mkdir build
-          cd build
-          cmake -G "MinGw Makefiles" ..
-          mingw32-make
-
-      - name: Release executable
-        uses: actions/upload-artifact@v4
+      - name: Install deps
+        uses: msys2/setup-msys2@v2
         with:
-          name: Windows build
-          path: build/HashMap.exe
+          install: make cmake mingw-w64-x86_64-gcc
+
+      # - name: Install CMake and MSYS2
+      #   run: |
+      #     choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+      #     choco install msys2
+      #     refreshenv
+      
+      # - name: Setup MSYS
+      #   run: |
+      #     C:\msys64\usr\bin\bash.exe -c "pacman -Sy --noconfirm"
+      #     C:\msys64\usr\bin\bash.exe -c "pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make"
+
+      # - name: Build
+      #   run: |
+      #     mkdir build
+      #     cd build
+      #     cmake -G "MinGw Makefiles" ..
+      #     mingw32-make
+
+      # - name: Release executable
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: Windows build
+      #     path: build/HashMap.exe
