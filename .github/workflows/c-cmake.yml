@@ -62,7 +62,7 @@ jobs:
           mkdir build
           cd build
           cmake ..
-          mingw32-make
+          make
 
       - name: Release executable
         uses: actions/upload-artifact@v4
