@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G "MinGw Makefiles" ..
+          cmake ..
           mingw32-make
 
       - name: Release executable
