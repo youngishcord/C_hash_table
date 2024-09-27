@@ -31,6 +31,12 @@ jobs:
         run: |
           cd build
           make
+      
+      - name: Release executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: Linux build
+          path: build/HashMap
 
 
 # jobs:
