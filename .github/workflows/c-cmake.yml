@@ -57,6 +57,19 @@ jobs:
         with:
           install: make cmake mingw-w64-x86_64-gcc
 
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake -G "MinGw Makefiles" ..
+          mingw32-make
+
+      - name: Release executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows build
+          path: build/HashMap.exe
+
       # - name: Install CMake and MSYS2
       #   run: |
       #     choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
@@ -68,15 +81,3 @@ jobs:
       #     C:\msys64\usr\bin\bash.exe -c "pacman -Sy --noconfirm"
       #     C:\msys64\usr\bin\bash.exe -c "pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make"
 
-      # - name: Build
-      #   run: |
-      #     mkdir build
-      #     cd build
-      #     cmake -G "MinGw Makefiles" ..
-      #     mingw32-make
-
-      # - name: Release executable
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: Windows build
-      #     path: build/HashMap.exe
