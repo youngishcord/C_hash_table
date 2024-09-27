@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "include/hashmap.h"
+#include "../include/hashmap.h"
 
 
 typedef struct _hash_map_entry_t {
@@ -52,7 +52,7 @@ hash_map_t* hash_map_create(size_t size) {
     return map;
 }
 
-hash_map_t* hash_map_insert(hash_map_t* map, const* key, long value) {
+hash_map_t* hash_map_insert(hash_map_t* map, const char* key, long value) {
     assert(map != NULL);
     assert(key != NULL);
 
@@ -94,8 +94,8 @@ bool hash_map_hash_key(hash_map_t* map, const char* key) {
 }
 
 long hash_map_at(hash_map_t* map, const char* key) {
-    assert(map == NULL);
-    assert(key == NULL);
+    assert(map != NULL);
+    assert(key != NULL);
     assert(hash_map_hash_key(map, key));
 
     for (size_t idx = hash(key) % map->size; idx < map->size; idx++) {
@@ -115,7 +115,7 @@ long hash_map_at(hash_map_t* map, const char* key) {
 }
 
 void hash_map_free(hash_map_t* map) {
-    assert(map == NULL);
+    assert(map != NULL);
 
     for (size_t idx = 0; idx < map->size; idx++) {
         if (map->entries[idx].key != NULL) {
